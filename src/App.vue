@@ -2,13 +2,7 @@
 <template>
   <el-container>
     <Header />
-    <Main>
-      <div class="test">
-        {{a}}
-        <img alt="Vue logo" src="./assets/logo.png" />
-        <el-button>I am ElButton</el-button>
-      </div>
-    </Main>
+    <router-view />
 
     <el-footer class="bg">Footer</el-footer>
   </el-container>
