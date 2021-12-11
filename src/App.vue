@@ -1,49 +1,15 @@
 
 <template>
-  <el-container>
-    <Header />
-    <router-view />
-
-    <el-footer class="bg">Footer</el-footer>
-  </el-container>
-
+  <Header />
+  <router-view />
+  <Footer />
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
-import Main from '@/components/Main.vue'
+import Footer from '@/components/Footer.vue'
 
 export default {
-  components: { Header, Main },
-  data() {
-    return {
-      a: 'old text'
-    }
-  }
-  // setup() {
-  //   return {
-  //     a: 'text'
-  //   }
-  // },
+  components: { Header, Footer },
 }
 </script>
-
-<style lang="scss">
-
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-.test {
-  height: 1000px
-}
-.bg {
-  background-color: #2c3e50;
-  color: #fff;
-}
-</style>

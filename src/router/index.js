@@ -47,9 +47,9 @@ export default [
   //   path: '/suppdetail',
   //   component:suptDetail
   // },
-  // {
-  //   path: '/login',
-  //   component:Login
-  // }
+  {
+    path: '/login',
+    component: () => import('@/views/Login/index.vue')
+  }
 ]
 

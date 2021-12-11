@@ -1,17 +1,22 @@
 <template>
-  <header>header</header>
+  <header>
+    <div><img src="assets/header/logo.png" /></div>
+    <nav>
+      <router-link to="/"><li>首页</li></router-link>
+      <router-link to="/"><li>新闻动态</li></router-link>
+      <router-link to="/"><li>产品</li></router-link>
+      <router-link to="/"><li>解决方案</li></router-link>
+      <router-link to="/"><li>支持与服务</li></router-link>
+      <router-link to="/"><li>关于我们</li></router-link>
+    </nav>
+    <ul class="utils">
+      <router-link to="/"><li>公告</li></router-link>
+      <router-link to="/login"><li>登陆</li></router-link>
+    </ul>
+  </header>
 </template>
 
 <script>
-import { ref } from 'vue'
-
-export default {
-  setup () {
-    return {
-      a: 1
-    }
-  }
-}
 
 </script>
 
@@ -24,8 +29,28 @@ header {
   display: flex;
   align-items: center;
   height: var(--header-height);
-  background-color: #159592;
-  color: #fff
+  background-color: var(--primary-color) ;
+  color: #fff;
+  z-index: 999;
+  padding: 0 1rem;
+
+  img {
+    height: 30px;
+    object-fit: contain;
+  }
+
+  li {
+    display: inline-block;
+    padding: 0 0.5rem;
+    margin: 0 1rem;
+    font-size: 1.1rem;
+  }
+
+  nav {
+    padding: 0 2rem;
+    flex: 1;
+  }
+
 }
 
 </style>
