@@ -5,16 +5,16 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6" v-for="item in upperData" :key="item.t">
             <div class="item">
-              <div class="card">
+              <router-link to="/supportdetail" class="card">
                 <img :src="item.icon" />
                 <h3>{{item.t}}</h3>
-              </div>
+              </router-link>
               <p>{{item.p}}</p>
             </div>
           </el-col>
         </el-row>
       </ul>
-      <div class="lower">
+      <!-- <div class="lower">
         <ul>
           <router-link to="/"><li>产品</li></router-link>
           <router-link to="/"><li>网络</li></router-link>
@@ -42,7 +42,7 @@
           <router-link to="/"><li>XXXXXXXX</li></router-link>
           <router-link to="/"><li>XXXXXXXX</li></router-link>
         </ul>
-      </div>
+      </div> -->
     </div>
 
   </footer>
@@ -64,14 +64,15 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 footer {
   position: relative;
   background-color: #252a34;
   color: #fff;
-  padding: 1rem 0;
+  padding: 5rem 0;
+  z-index: 0;
   .upper {
-    border-bottom: 1px solid #fff;
+    // border-bottom: 1px solid #fff;
     text-align: center;
     padding: 2rem 0;
 

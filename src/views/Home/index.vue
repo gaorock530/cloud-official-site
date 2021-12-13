@@ -1,7 +1,7 @@
 <template>
   <Main>
     <section class="sec-1">
-      <el-carousel height="464px" :autoplay="false" trigger="click" indicator-position="outside" arrow="never">
+      <el-carousel height="464px" :autoplay="true" trigger="click" indicator-position="outside" arrow="never">
         <el-carousel-item v-for="url in carousel" :key="url">
           <div class="carousel-wrapper" :style="{backgroundImage: `url(${url})`}">
             <div class="container carousel-text-wrapper">
@@ -40,7 +40,7 @@
                 <ul>
                   <li v-for="li in item.l" :key="li">{{li}}</li>
                 </ul>
-                <router-link to="/" class="btn">查看详情</router-link>
+                <router-link to="/product" class="btn">查看详情</router-link>
               </div>
             </el-col>
           </el-row>
@@ -59,7 +59,7 @@
         <div class="wrapper">
           <el-row :gutter="0">
             <!-- :xs="8" :sm="6" :md="4" :lg="3" :xl="1" -->
-            <el-col :class="{active: item.active}" :xl="item.active?9:5" :lg="item.active?9:5" :md="12" v-for="(item, idx) in cardData" :key="item.t">
+            <el-col :class="{active: item.active}" :md="item.active?9:5" :sm="12" :xs="24"  v-for="(item, idx) in cardData" :key="item.t">
               <div class="grid-content" :style="{ backgroundImage: `url(${item.bg})`}" @mouseenter="handleMouseEnter(idx)">
                 <div class="icon">
                   <img :src="item.icon" />
@@ -295,10 +295,6 @@ export default {
 
         .btn {
           display: none;
-        }
-
-        &:hover .btn {
-          display: flex;
           align-items: center;
           justify-content: center;
           position: absolute;
@@ -308,6 +304,10 @@ export default {
           color: #fff;
           bottom: 0;
           left: 0;
+        }
+
+        &:hover .btn {
+          display: flex;
         }
       }
 
@@ -421,6 +421,20 @@ export default {
   }
 }
 
+@media screen and (max-width: 991px) {
+  .sec-3 .sec-3-wrapper .wrapper .grid-content {
+    align-items: flex-start;
+    padding: 0 8rem;
+
+    .more {
+      display: initial
+    }
+    .icon {
+      text-align: left;
+    }
+  }
+}
+
 .sec-4 {
   position: relative;
   text-align: center;
@@ -475,9 +489,9 @@ export default {
 </style>
 <style>
 
-.el-col {
+/* .el-col {
   transition: all 200ms ease-in-out;
-}
+} */
 
 .el-carousel__indicators--outside {
   position: absolute !important;
@@ -487,4 +501,6 @@ export default {
 .el-carousel__indicator.el-carousel__indicator--horizontal .el-carousel__button {
   background-color: var(--primary-color) !important;
 }
+
+
 </style>

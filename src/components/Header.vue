@@ -3,14 +3,14 @@
     <div><img src="assets/header/logo.png" /></div>
     <nav>
       <router-link to="/"><li>首页</li></router-link>
-      <router-link to="/"><li>新闻动态</li></router-link>
-      <router-link to="/"><li>产品</li></router-link>
-      <router-link to="/"><li>解决方案</li></router-link>
-      <router-link to="/"><li>支持与服务</li></router-link>
+      <router-link to="/news"><li>新闻动态</li></router-link>
+      <router-link to="/productlist"><li>产品</li></router-link>
+      <router-link to="/solution"><li>解决方案</li></router-link>
+      <router-link to="/support"><li>文档中心</li></router-link>
       <router-link to="/"><li>关于我们</li></router-link>
     </nav>
     <ul class="utils">
-      <router-link to="/"><li>公告</li></router-link>
+      <router-link to="/notice"><li>公告</li></router-link>
       <router-link to="/login"><li>登陆</li></router-link>
     </ul>
   </header>

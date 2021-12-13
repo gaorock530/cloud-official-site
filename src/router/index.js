@@ -15,22 +15,34 @@ export default [
     path: '/',
     component: () => import('@/views/Home/index.vue')
   },
-  // {
-  //   path: '/news',
-  //   component:News
-  // },
+  {
+    path: '/notice',
+    component: () => import('@/views/Notice/index.vue'),
+  },
+  {
+    path: '/news',
+    component: () => import('@/views/News/index.vue'),
+  },
+  {
+    path: '/solution',
+    component: () => import('@/views/Solution/index.vue'),
+  },
+  {
+    path: '/test',
+    component: () => import('@/views/Home/test.vue'),
+  },
   // {
   //   path: '/problem',
   //   component:Problem
   // },
-  // {
-  //   path: '/product',
-  //   component:Product
-  // },
-  // {
-  //   path: '/support',
-  //   component:Support
-  // },
+  {
+    path: '/product',
+    component: () => import('@/views/ProductDetail/index.vue')
+  },
+  {
+    path: '/support',
+    component:() => import('@/views/Support/index.vue')
+  },
   // {
   //   path: '/notice',
   //   component:Notice
@@ -39,14 +51,14 @@ export default [
   //   path: '/solution',
   //   component:Solution
   // },
-  // {
-  //   path: '/details',
-  //   component:Details
-  // },
-  // {
-  //   path: '/suppdetail',
-  //   component:suptDetail
-  // },
+  {
+    path: '/productlist',
+    component: () => import('@/views/Product/index.vue')
+  },
+  {
+    path: '/supportdetail',
+    component: () => import('@/views/SupportDetail/index.vue')
+  },
   {
     path: '/login',
     component: () => import('@/views/Login/index.vue')

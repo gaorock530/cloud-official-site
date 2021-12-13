@@ -1,4 +1,6 @@
 import { createApp } from 'vue'
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@/router/index'
 import App from '@/App.vue'
@@ -8,6 +10,10 @@ const app = createApp(App)
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+app.use(ElementPlus, {
+  locale: zhCn,
 })
 
 app.use(router)
