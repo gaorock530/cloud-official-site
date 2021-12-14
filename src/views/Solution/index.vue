@@ -24,7 +24,7 @@
     <section class="sec-2">
       <h1>方案优势</h1>
       <ul class="sec-2-tabs">
-        <li v-for="item in tabData" :key="item.icon" :class="{active: item.active}">
+        <li v-for="item in tabData" :key="item.icon" :class="{active: item.id === tabActiveId}" @click="onTabChange(item.id)">
           <span>{{item.t}}</span>
         </li>
       </ul>
@@ -35,7 +35,7 @@
         <div class="row">
           <el-row :gutter="120">
             <el-col :sm="10" >
-              <img class="first-child" src="assets/solution/bg3/bg3-1.png" />
+              <img class="first-child" src="/assets/solution/bg3/bg3-1.png" />
             </el-col>
             <el-col :sm="14">
               <div class="grid-content">
@@ -74,7 +74,7 @@
               </div>
             </el-col>
             <el-col :sm="10">
-              <img class="last-child" src="assets/solution/bg3/bg3-2.png" alt="">
+              <img class="last-child" src="/assets/solution/bg3/bg3-2.png" alt="">
             </el-col>
           </el-row>
         </div>
@@ -112,6 +112,7 @@ export default {
   components: { Main, ArrowRight },
   data() {
     return {
+      tabActiveId: 1,
       programData: [
         { img: 'assets/solution/logo1.png', title: '应用视角', content: '央行云PaaS平台以应用为第一视角，以平台适配应用为设计理念，从应用视角统一整合资源、数据库、中间件等应用管理相关对象。' },
         { img: 'assets/solution/logo2.png', title: '云原生融合', content: '基于云原生容器以及微服务技术，全面拥抱kubernetes生态，为用户提供生产级增值功能。', },
@@ -125,9 +126,15 @@ export default {
         { img: 'assets/solution/bg3/logo4.png', title: 'API网管', content: '能提供API的完整生命周期管理，包括 创建、维护、发布、运行、下线等', }
       ],
       tabData: [
-        { t: '云原生应用交付', active: true },
-        { t: 'PaaS服务平台' }
+        { id: 1, t: '云原生应用交付' },
+        { id: 2, t: 'PaaS服务平台' }
       ]
+    }
+  },
+  methods: {
+    onTabChange(id) {
+      this.tabActiveId = id
+      // API request here...
     }
   }
 }
@@ -135,7 +142,7 @@ export default {
 
 <style lang="scss" scoped>
 .top {
-  background-image: url("assets/Solution/bg1.png");
+  background-image: url("/assets/Solution/bg1.png");
   height: 400px;
   background-position: center;
   background-repeat: no-repeat;

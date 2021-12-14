@@ -11,6 +11,9 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0)
+})
 
 app.use(ElementPlus, {
   locale: zhCn,

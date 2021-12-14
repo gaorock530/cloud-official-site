@@ -23,7 +23,7 @@
             <el-icon><arrow-right /></el-icon>
           </router-link>
           <div class="sec-2-tabs">
-            <li v-for="item in tabData" :key="item.icon" :class="{active: item.active}">
+            <li v-for="item in tabData" :key="item.icon" :class="{active: item.id === tabActiveId}" @click="onTabChange(item.id)">
               <img :src="item.icon" />
               <span>{{item.t}}</span>
             </li>
@@ -111,16 +111,17 @@ export default {
         'assets/home/big2.png',
         'assets/home/big3.png',
       ],
+      tabActiveId: 1,
       carouselText: [
         {h: '弹性伸缩(AS)', p: '弹性伸缩(AS)可以根据业务需求和策略，自动调整 CVM 计算资源，确保拥有适量的CVM实例处理应用程序负载。'}
       ],
       tabData: [
-        {icon: 'assets/home/bg2/bg2-1.png', t: '计算', active: true},
-        {icon: 'assets/home/bg2/bg2-2.png', t: '网络'},
-        {icon: 'assets/home/bg2/bg2-3.png', t: '存储'},
-        {icon: 'assets/home/bg2/bg2-4.png', t: '中间件'},
-        {icon: 'assets/home/bg2/bg2-5.png', t: '数据库'},
-        {icon: 'assets/home/bg2/bg2-6.png', t: '监控与运维'},
+        {id: 1, icon: 'assets/home/bg2/bg2-1.png', t: '计算', active: true},
+        {id: 2, icon: 'assets/home/bg2/bg2-2.png', t: '网络'},
+        {id: 3, icon: 'assets/home/bg2/bg2-3.png', t: '存储'},
+        {id: 4, icon: 'assets/home/bg2/bg2-4.png', t: '中间件'},
+        {id: 5, icon: 'assets/home/bg2/bg2-5.png', t: '数据库'},
+        {id: 6, icon: 'assets/home/bg2/bg2-6.png', t: '监控与运维'},
       ],
       tabDetailData: [
         {t: '弹性伸缩AS', p: '可随时自由获取、弹性伸缩的云服务器', l: ['规格丰富', '稳定可靠']},
@@ -148,6 +149,10 @@ export default {
         c.active = idx === index
         return c
       })
+    },
+    onTabChange(id) {
+      this.tabActiveId = id
+      // API request here...
     }
   }
 }
@@ -325,7 +330,7 @@ export default {
   }
   .sec-3-wrapper {
     text-align: center;
-    background-image: url('assets/home/bg3/bg.png');
+    background-image: url('/assets/home/bg3/bg.png');
     background-position: top center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -438,7 +443,7 @@ export default {
 .sec-4 {
   position: relative;
   text-align: center;
-  background-image: url('assets/home/bg5/bg5.png');
+  background-image: url('/assets/home/bg5/bg5.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -446,7 +451,7 @@ export default {
   .sec-4-wrapper {
     position: relative;
     top: -50px;
-    padding: 0 2rem 10rem 2rem;
+    padding: 0 2rem 2rem 2rem;
     max-width: 1100px;
   }
 
@@ -487,18 +492,18 @@ export default {
 }
 
 </style>
-<style>
+<style scoped>
 
 /* .el-col {
   transition: all 200ms ease-in-out;
 } */
 
-.el-carousel__indicators--outside {
+::v-deep .el-carousel__indicators--outside {
   position: absolute !important;
   bottom: 10px;
   transform: translateX(-50%);
 }
-.el-carousel__indicator.el-carousel__indicator--horizontal .el-carousel__button {
+::v-deep .el-carousel__indicator.el-carousel__indicator--horizontal .el-carousel__button {
   background-color: var(--primary-color) !important;
 }
 

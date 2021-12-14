@@ -101,7 +101,7 @@ export default {
 
 .banner {
   height: 500px;
-  background-image: url('assets/details/bg1.png');
+  background-image: url('/assets/details/bg1.png');
   background-position: center;
   background-size: cover;
 
@@ -236,7 +236,7 @@ export default {
 
 .sec-2 {
   padding: 1rem 0;
-  background-image: url('assets/details/bg2.png');
+  background-image: url('/assets/details/bg2.png');
   background-position: center;
   background-size: cover;
 

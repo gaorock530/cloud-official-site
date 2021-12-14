@@ -9,11 +9,11 @@
     <div class="main-section container">
       <el-affix :offset="80" class="aside">
         <aside>
-          <div class="inputBox">
+          <form class="inputBox" @submit.prevent="onSearch">
             <el-icon class="search-icon"><search /></el-icon>
             <input type="text" v-model="searchText" placeholder="搜索产品" />
-          </div>
-          <li :class="{active: item.active}" v-for="item in asideList" :key="item.t"> {{item.t}}</li>
+          </form>
+          <li :class="{active: item.id === cateActiveId}" v-for="item in asideList" :key="item.t" @click="onCateChange(item.id)">{{item.t}}</li>
         </aside>
       </el-affix>
       <div class="content">
@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       searchText: '',
+      cateActiveId: 1,
       bgText: [
         {
           h: "央行云产品",
@@ -56,15 +57,15 @@ export default {
         },
       ],
       asideList: [
-        { t: "计算", active: true },
-        { t: "存储" },
-        { t: "网络" },
-        { t: "中间件" },
-        { t: "数据库" },
-        { t: "开发者工具" },
-        { t: "边界安全防护" },
-        { t: "计算机环境安全防护" },
-        { t: "安全管理中心" },
+        {id: 1, t: "计算"},
+        {id: 2, t: "存储" },
+        {id: 3, t: "网络" },
+        {id: 4, t: "中间件" },
+        {id: 5, t: "数据库" },
+        {id: 6, t: "开发者工具" },
+        {id: 7, t: "边界安全防护" },
+        {id: 8, t: "计算机环境安全防护" },
+        {id: 9, t: "安全管理中心" },
       ],
       lastSecData: [
         { t: "云服务器", p: "安全稳定，高弹性的计算服务", tag: 'NEW' },
@@ -75,12 +76,26 @@ export default {
       ],
     };
   },
+  methods: {
+    onCateChange(id) {
+      this.cateActiveId = id
+      // API request here
+    },
+    onSearch() {
+      if (!this.searchText) return
+      // search API request here
+      console.log(this.searchText)
+
+      // after search completed, clear text
+      this.searchText = ''
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .top {
-  background-image: url("assets/product/bg1.png");
+  background-image: url("/assets/product/bg1.png");
   height: 400px;
   background-position: center;
   background-repeat: no-repeat;
@@ -140,11 +155,14 @@ export default {
       li {
         padding: 1rem 2rem;
         font-size: 1.2rem;
-
+        cursor: pointer;
         &.active {
           color: var(--primary-color);
           border-left: 2px solid var(--primary-color);
           background-color: #e8f2f2;
+        }
+        &:hover {
+          color: var(--primary-color);
         }
       }
     }

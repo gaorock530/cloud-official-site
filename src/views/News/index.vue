@@ -10,7 +10,7 @@
       <el-affix :offset="80" class="aside">
         <aside>
           <h1>相关新闻</h1>
-          <li :class="{active: item.active}" v-for="item in tabData" :key="item.title"> {{item.title}}</li>
+          <li :class="{active: item.id === cateActiveId}" v-for="item in tabData" :key="item.title" @click="onCateChange(item.id)">{{item.title}}</li>
         </aside>
       </el-affix>
       <main>
@@ -59,10 +59,11 @@ export default {
   components: { Main, ArrowRight },
   data() {
     return {
+      cateActiveId: 1,
       tabData: [
-        { title: '新闻动态', active: true },
-        { title: '媒体动态' },
-        { title: '行业分析报告' }
+        {id: 1, title: '新闻动态'},
+        {id: 2, title: '媒体动态' },
+        {id: 3, title: '行业分析报告' }
       ],
       tableData: [
         { d: '30', m: '11月', y: '2021', t: '促进供应链金融健康发展——央行电证福费廷子系统成功上线', l: '截至2021年3月29日，电证系统法人机构数量达到95家，开证金额突破5000亿元，业务发展良好，市场反响强烈，有效促进了供应 链金融行业的数字化转型与健康发展。' },
@@ -79,6 +80,12 @@ export default {
         { img: 'assets/news/pic2.png', t: 'IDC金融云市场报告发布 央行云 增速80%超行业平均水平', p: '2019-08-13 13:08:00' }
       ]
     }
+  },
+  methods: {
+    onCateChange(id) {
+      this.cateActiveId = id
+      // API request here
+    }
   }
 }
 </script>
@@ -89,7 +96,7 @@ h1 {
   padding-bottom: 1rem;
 }
 .top {
-  background-image: url("assets/news/bg1.png");
+  background-image: url("/assets/news/bg1.png");
   height: 400px;
   background-position: center;
   background-repeat: no-repeat;
@@ -127,11 +134,15 @@ h1 {
       li {
         padding: 1rem 2rem;
         font-size: 1.2rem;
+        cursor: pointer;
 
         &.active {
           color: var(--primary-color);
           border-left: 2px solid var(--primary-color);
           background-color: #f1f9f9;
+        }
+        &:hover {
+          color: var(--primary-color);
         }
       }
     }

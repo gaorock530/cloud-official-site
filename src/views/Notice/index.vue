@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       tabData: [
-        { icon: 'assets/home/bg2/bg2-1.png', title: '全部', active: true }
+        { icon: '/assets/home/bg2/bg2-1.png', title: '全部', active: true }
         // { icon: 'assets/home/bg2/bg2-2.png', title: '德胜' },
         // { icon: 'assets/home/bg2/bg2-3.png', title: '稻香湖' }
       ],
@@ -56,7 +56,7 @@ export default {
 
 <style lang="scss" scoped>
 .top {
-  background-image: url("assets/notice/bg.png");
+  background-image: url("/assets/notice/bg.png");
   height: 240px;
   background-position: center;
   background-repeat: no-repeat;
@@ -117,7 +117,7 @@ ul {
   }
 }
 .central {
-  background-image: url("assets/notice/bg1.png");
+  background-image: url("/assets/notice/bg1.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

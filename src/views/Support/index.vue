@@ -3,17 +3,17 @@
     <section class="top">
       <div class="container">
         <h1>文档中心</h1>
-        <div class="input-wrapper">
+        <form class="input-wrapper" @submit.prevent="onSearch">
           <input type="text" v-model="searchText" placeholder="请输入关键字，如云主机" />
-          <el-icon class="search-icon"><search /></el-icon>
-        </div>
+          <el-icon class="search-icon" @click="onSearch"><search /></el-icon>
+        </form>
       </div>
     </section>
     <div class="main-section container">
       <el-affix :offset="80" class="aside">
         <aside>
           <h1>产品文档</h1>
-          <li :class="{active: item.active}" v-for="item in asideList" :key="item.t"> {{item.t}}</li>
+          <li :class="{active: item.id === cateActiveId}" v-for="item in asideList" :key="item.t" @click="onCateActiveChange(item.id)">{{item.t}}</li>
         </aside>
       </el-affix>
       <div class="content">
@@ -25,7 +25,7 @@
             </div>
             <ul class="card-section">
               <el-row :gutter="20">
-                <el-col :xs="12" :sm="8" :md="6" v-for="(item, i) in lastSecData[idx]" :key="i">
+                <el-col :xs="24" :sm="12" :md="6" v-for="(item, i) in lastSecData[idx]" :key="i">
                   <li>
                     <div class="product-title">
                       <h3>{{item.t}}</h3>
@@ -52,13 +52,13 @@ export default {
   data() {
     return {
       searchText: '',
-      bgText: [{ h: "文档中心" }],
+      cateActiveId: 1,
       asideList: [
-        { t: "计算", img: 'assets/support/logo5.png', active: true },
-        { t: "网络", img: 'assets/support/logo2.png' },
-        { t: "存储", img: 'assets/support/logo3.png' },
-        { t: "数据库", img: 'assets/support/logo4.png' },
-        { t: "互联网中间件", img: 'assets/support/logo5.png' },
+        { id: 1, t: "计算", img: 'assets/support/logo5.png' },
+        { id: 2, t: "网络", img: 'assets/support/logo2.png' },
+        { id: 3, t: "存储", img: 'assets/support/logo3.png' },
+        { id: 4, t: "数据库", img: 'assets/support/logo4.png' },
+        { id: 5, t: "互联网中间件", img: 'assets/support/logo5.png' },
       ],
       lastSecData: [
         [
@@ -91,12 +91,26 @@ export default {
       ],
     };
   },
+  methods: {
+    onCateActiveChange(id) {
+      this.cateActiveId = id
+      // API request here
+    },
+    onSearch() {
+      if (!this.searchText) return
+
+      console.log(this.searchText)
+      // search API request here
+
+
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .top {
-  background-image: url("assets/support/bg1.png");
+  background-image: url("/assets/support/bg1.png");
   height: 400px;
   background-position: center;
   background-repeat: no-repeat;
@@ -142,6 +156,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
       }
     }
   }
@@ -180,11 +195,14 @@ export default {
       li {
         padding: 1rem 2rem;
         font-size: 1.2rem;
-
+        cursor: pointer;
         &.active {
           color: var(--primary-color);
           border-left: 2px solid var(--primary-color);
           background-color: #e8f2f2;
+        }
+        &:hover {
+          color: var(--primary-color);
         }
       }
     }
@@ -222,7 +240,7 @@ export default {
           margin: 10px 0;
           padding: 2rem;
           box-shadow: 0 0 10px rgba(#000, 0.1);
-
+          cursor: pointer;
           .product-title {
             display: flex;
             align-items: center;
@@ -251,42 +269,4 @@ export default {
 
 }
 
-
-
-
-
-
-
-
-
-.bg1 {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 33.4rem;
-  color: #ffffff;
-  font-size: 30px;
-}
-.sec2 {
-  height: auto;
-  li{
-      margin-left:2rem;
-      margin-bottom: 1.8rem;
-      font-size: 16px;
-color: #252934;
-  }
-}
-.blockList {
-  width: 220px;
-  height: 64px;
-  background: #ffffff;
-  box-shadow: 0px 3px 6px 0px #f0f3f5;
-}
-.grid-content {
-  width: 220px;
-  height: 64px;
-  background: #ffffff;
-  box-shadow: 0px 3px 6px 0px #f0f3f5;
-}
 </style>
