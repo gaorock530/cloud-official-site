@@ -2,12 +2,12 @@
   <Main>
     <section class="sec-1">
       <el-carousel height="464px" :autoplay="true" trigger="click" indicator-position="outside" arrow="never">
-        <el-carousel-item v-for="url in carousel" :key="url">
-          <div class="carousel-wrapper" :style="{backgroundImage: `url(${url})`}">
+        <el-carousel-item v-for="item in carousel" :key="item.h">
+          <div class="carousel-wrapper" :style="{backgroundImage: `url(${item.img})`}">
             <div class="container carousel-text-wrapper">
               <div>
-                <h1>{{carouselText[0].h}}</h1>
-                <p>{{carouselText[0].p}}{{carouselText[0].p}}</p>
+                <h1>{{item.h}}</h1>
+                <p>{{item.p}}</p>
               </div>
             </div>
           </div>
@@ -23,9 +23,13 @@
             <el-icon><arrow-right /></el-icon>
           </router-link>
           <div class="sec-2-tabs">
-            <li v-for="item in tabData" :key="item.icon" :class="{active: item.id === tabActiveId}" @click="onTabChange(item.id)">
-              <img :src="item.icon" />
-              <span>{{item.t}}</span>
+            <li
+              v-for="(cate, idx) in productsData"
+              :key="idx"
+              :class="{active: idx === tabActiveId}"
+              @click="onTabChange(idx)">
+              <img :src="cate.icon" />
+              <span>{{cate.cate}}</span>
             </li>
           </div>
         </div>
@@ -33,14 +37,14 @@
       <div class="sec-2-content">
         <div class="detail container">
           <el-row :gutter="24">
-            <el-col :sm="12" :md="6" v-for="item in tabDetailData" :key="item.t">
+            <el-col :sm="12" :md="6" v-for="item in productsData[tabActiveId].sub" :key="item.ab">
               <div class="grid-content">
-                <div>{{item.t}}</div>
-                <p>{{item.p}}</p>
-                <ul>
+                <div>{{item.name}} {{item.ab?`(${item.ab})`:null}}</div>
+                <p>{{item.desc}}</p>
+                <!-- <ul>
                   <li v-for="li in item.l" :key="li">{{li}}</li>
-                </ul>
-                <router-link to="/product" class="btn">查看详情</router-link>
+                </ul> -->
+                <!-- <router-link to="/product" class="btn">查看详情</router-link> -->
               </div>
             </el-col>
           </el-row>
@@ -59,18 +63,16 @@
         <div class="wrapper">
           <el-row :gutter="0">
             <!-- :xs="8" :sm="6" :md="4" :lg="3" :xl="1" -->
-            <el-col :class="{active: item.active}" :md="item.active?9:5" :sm="12" :xs="24"  v-for="(item, idx) in cardData" :key="item.t">
+            <el-col :class="{active: featureActiveId === idx}" :md="featureActiveId === idx?9:5" :sm="12" :xs="24"
+            v-for="(item, idx) in featureData" :key="item.t">
               <div class="grid-content" :style="{ backgroundImage: `url(${item.bg})`}" @mouseenter="handleMouseEnter(idx)">
                 <div class="icon">
                   <img :src="item.icon" />
                   <h2>{{item.t}}</h2>
                 </div>
                 <div class="more">
-                  <p>基于强大技术能力和成熟产品体系推出的专有云解决方案，提供多版本满足不同的客户需求，为您构建专业安全稳定的云平台</p>
-                  <li>√ 快速可获得</li>
-                  <li>√ 高性能</li>
-                  <li>√ 灵活配置</li>
-                  <li>√ 丰富的解决方案</li>
+                  <p>{{item.l}}</p>
+                  <li v-for="tag in item.p" :key="tag">√ {{tag}}</li>
                   <div><router-link to="/">查看详情</router-link></div>
                 </div>
               </div>
@@ -102,39 +104,37 @@
 <script>
 import Main from '@/components/Main.vue'
 import { ArrowRight } from '@element-plus/icons-vue'
+import productsData from '@/data/products.js'
 export default {
   components: { Main, ArrowRight },
   data() {
     return {
       carousel: [
-        'assets/home/big1.png',
-        'assets/home/big2.png',
-        'assets/home/big3.png',
+        {
+          img: '/assets/home/big1.png',
+          h: '云服务器 CVM',
+          p: '云服务器（Cloud Virtual Machine，CVM）为您提供安全可靠的弹性计算服务。 只需几分钟，您就可以在云端获取和启用 CVM，来实现您的计算需求。随着业务需求的变化，您可以实时扩展或缩减计算资源。 CVM 支持按实际使用的资源计费，可以为您节约计算成本。使用 CVM 可以极大降低您的软硬件采购成本，简化 IT 运维工作。'
+        },
+        {
+          img: '/assets/home/big2.png',
+          h: '云硬盘 CBS',
+          p: '云硬盘（Cloud Block Storage，CBS）为您提供用于 CVM 的持久性数据块级存储服务。云硬盘中的数据自动地在可用区内以多副本冗余方式存储，避免数据的单点故障风险。云硬盘提供多种类型及规格的磁盘实例，满足稳定低延迟的存储性能要求。云硬盘支持在同可用区的实例上挂载/卸载，并且可以在几分钟内调整存储容量，满足弹性的数据需求。您只需为配置的资源量支付低廉的价格就能享受到以上的功能特性。'
+        },
+        {
+          img: '/assets/home/big3.png',
+          h: '私有网络 VPC',
+          p: '私有网络（Virtual Private Cloud，VPC）是基于M14-POC环境构建的专属云上网络空间，为您在M14-POC环境上的资源提供网络服务，不同私有网络间完全逻辑隔离。作为您在云上的专属网络空间，您可以通过软件定义网络的方式管理您的私有网络 VPC，实现 IP 地址、子网、路由表、网络 ACL 、流日志等功能的配置管理。私有网络还支持多种方式连接 Internet，如弹性 IP 、NAT 网关等，并提供多种计费方式和带宽包帮您节约成本。同时，您也可以通过 VPN 连接或专线接入连通M14-POC环境与您本地的数据中心，灵活构建混合云。'
+        }
       ],
-      tabActiveId: 1,
-      carouselText: [
-        {h: '弹性伸缩(AS)', p: '弹性伸缩(AS)可以根据业务需求和策略，自动调整 CVM 计算资源，确保拥有适量的CVM实例处理应用程序负载。'}
+      productsData: productsData,
+      tabActiveId: 0, // default idx
+      featureData: [
+        { bg: 'assets/home/bg3/bg3-1.png', icon: 'assets/home/bg3/logo1.png', t: '高性能计算', l:'通常使用很多处理器（作为单个机器的一部分）或者某一集群中组织的几台计算机（作为单个计 算资源操作）的计算系统和环境。',p:['高吞吐计算','分布计算','按需可扩展性','支持MPI并行消息接口'], active: true},
+        { bg: 'assets/home/bg3/bg3-2.png', icon: 'assets/home/bg3/logo2.png', t: '应用上云',l:'能够提供一种快速构建跨区域VPC及云上多VPC与云下多数据中心之间的高速、优质、稳定的网络能力',p:['重复性的执行动作','自助式服务','基础环境的复制','节约时间']},
+        { bg: 'assets/home/bg3/bg3-3.png', icon: 'assets/home/bg3/logo3.png', t: '容器',l:'提供高性能可伸缩的容器应用管理能力，支持企业级容器化应用的全生命周期管理',p:['集群管理,灵活的地域和网络环境选择','多种服务器托管方式','一站式容器生命周期管理','灵活扩展调度策略']},
+        { bg: 'assets/home/bg3/bg3-4.png', icon: 'assets/home/bg3/logo4.png', t: '数据库',l:'按照数据结构来组织、存储和管理数据的仓库',p:['访问控制','安全防护','数据加密','操作审计']},
       ],
-      tabData: [
-        {id: 1, icon: 'assets/home/bg2/bg2-1.png', t: '计算', active: true},
-        {id: 2, icon: 'assets/home/bg2/bg2-2.png', t: '网络'},
-        {id: 3, icon: 'assets/home/bg2/bg2-3.png', t: '存储'},
-        {id: 4, icon: 'assets/home/bg2/bg2-4.png', t: '中间件'},
-        {id: 5, icon: 'assets/home/bg2/bg2-5.png', t: '数据库'},
-        {id: 6, icon: 'assets/home/bg2/bg2-6.png', t: '监控与运维'},
-      ],
-      tabDetailData: [
-        {t: '弹性伸缩AS', p: '可随时自由获取、弹性伸缩的云服务器', l: ['规格丰富', '稳定可靠']},
-        {t: '裸金属BMS', p: '可随时自由获取、弹性伸缩的云服务器', l: ['规格丰富', '稳定可靠']},
-        {t: '云服务器CVM', p: '可随时自由获取、弹性伸缩的云服务器', l: ['规格丰富', '稳定可靠']},
-        {t: '容器服务平台TKE', p: '可随时自由获取、弹性伸缩的云服务器', l: ['规格丰富', '稳定可靠']}
-      ],
-      cardData: [
-        {bg: 'assets/home/bg3/bg3-1.png', icon: 'assets/home/bg3/logo1.png', t: '高性能计算', active: true},
-        {bg: 'assets/home/bg3/bg3-2.png', icon: 'assets/home/bg3/logo2.png', t: '应用上云'},
-        {bg: 'assets/home/bg3/bg3-3.png', icon: 'assets/home/bg3/logo3.png', t: '容器'},
-        {bg: 'assets/home/bg3/bg3-4.png', icon: 'assets/home/bg3/logo4.png', t: '数据库'},
-      ],
+      featureActiveId: 0,
       lastSecData: [
         {img: 'assets/home/bg5/logo1.png', t: '多中心金融合规专区', p: '"两地六中心"合规机房，通过等保四级，可信云认证，助力企业顺利通过合规验收，数据异地自动同步，业务无忧。'},
         {img: 'assets/home/bg5/logo2.png', t: '30+安全机制立体防护', p: '多重防护保障数据安全，秒级抵御网络攻击，P级黑产数据，90%恶意用户识别率，降低金融欺诈风险'},
@@ -145,10 +145,7 @@ export default {
   },
   methods: {
     handleMouseEnter(idx) {
-      this.cardData = this.cardData.map((c, index) => {
-        c.active = idx === index
-        return c
-      })
+      this.featureActiveId = idx
     },
     onTabChange(id) {
       this.tabActiveId = id
@@ -179,7 +176,9 @@ export default {
       }
       p {
         font-size: 1.2rem;
-        max-width: 900px;
+        max-width: 800px;
+        color: #666;
+        line-height: 2rem;
       }
     }
   }
@@ -228,7 +227,7 @@ export default {
           object-fit: contain;
         }
         span {
-          font-size: 1rem;
+          font-size: 1.3rem;
           padding: 5px 0;
         }
 
@@ -263,7 +262,7 @@ export default {
 
   .sec-2-content {
     background-color: #f3f3f3;
-    padding-bottom: 3rem;
+    padding: 1rem 0;
 
     .detail {
 
@@ -274,14 +273,14 @@ export default {
         background-color: #fff;
         border-radius: 5px;
         overflow: hidden;
-        padding: 2rem 1rem;
+        padding: 2rem;
 
         &>div {
           font-size: 1.4rem
         }
 
         &>p {
-          font-size: 1rem;
+          font-size: 1.2rem;
           color: #666;
           padding: 1rem 0;
         }
@@ -392,6 +391,8 @@ export default {
           display: none;
           color: #fff;
           text-align: left;
+          font-size: 1.2rem;
+
           a {
             display: inline-block;
             margin-top: 3rem;

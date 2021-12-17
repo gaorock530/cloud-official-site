@@ -13,22 +13,22 @@
             <el-icon class="search-icon"><search /></el-icon>
             <input type="text" v-model="searchText" placeholder="搜索产品" />
           </form>
-          <li :class="{active: item.id === cateActiveId}" v-for="item in asideList" :key="item.t" @click="onCateChange(item.id)">{{item.t}}</li>
+          <li :class="{active: idx === cateActiveId}" v-for="(cate, idx) in productsData" :key="idx" @click="onCateChange(idx)">{{cate.cate}}</li>
         </aside>
       </el-affix>
       <div class="content">
         <ul class="card-title">
-          <li v-for="group in 5" :key="group">
-            <h1>{{asideList[group-1].t}}</h1>
+          <li v-for="(cate, idx) in productsData" :key="idx">
+            <h1>{{cate.cate}}</h1>
             <ul class="card-section">
               <el-row :gutter="20">
-                <el-col :xs="24" :sm="12" :md="8" v-for="(item, i) in lastSecData" :key="i">
-                  <li>
+                <el-col :xs="24" :sm="12" :md="8" v-for="(item, i) in cate.sub" :key="i">
+                  <li :id="cate.id">
                     <div class="product-title">
-                      <h3>{{item.t}}</h3>
-                      <div class="tag" v-if="item.tag">{{item.tag}}</div>
+                      <h3>{{item.name}} {{item.ab?`(${item.ab})`:null}}</h3>
+                      <!-- <div class="tag" v-if="item.tag">{{item.tag}}</div> -->
                     </div>
-                    <p>{{item.p}}</p>
+                    <p>{{item.desc}}</p>
                   </li>
                 </el-col>
               </el-row>
@@ -43,42 +43,28 @@
 <script>
 import Main from "@/components/Main.vue"
 import { Search } from '@element-plus/icons-vue'
+import productsData from '@/data/products.js'
 
 export default {
   components: { Main, Search },
   data() {
     return {
+      productsData: productsData,
       searchText: '',
-      cateActiveId: 1,
+      cateActiveId: 0,
       bgText: [
         {
           h: "央行云产品",
           p: "从基础设施到行业应用领域，央行云提供完善的产品体系，助力您的业务腾飞",
         },
-      ],
-      asideList: [
-        {id: 1, t: "计算"},
-        {id: 2, t: "存储" },
-        {id: 3, t: "网络" },
-        {id: 4, t: "中间件" },
-        {id: 5, t: "数据库" },
-        {id: 6, t: "开发者工具" },
-        {id: 7, t: "边界安全防护" },
-        {id: 8, t: "计算机环境安全防护" },
-        {id: 9, t: "安全管理中心" },
-      ],
-      lastSecData: [
-        { t: "云服务器", p: "安全稳定，高弹性的计算服务", tag: 'NEW' },
-        { t: "裸金属服务器", p: "用于运行关键任务应用程序的单租户物理服务器" },
-        { t: "弹性伸缩", p: "高效的低成本计算资源管理策略" },
-        { t: "容器服务", p: "高扩展和高性能容器服务"},
-        { t: "容器服务", p: "高扩展和高性能容器服务", tag: '热门' },
-      ],
+      ]
     };
   },
   methods: {
-    onCateChange(id) {
-      this.cateActiveId = id
+    onCateChange(idx) {
+      this.cateActiveId = idx
+      const topElement = document.getElementById(productsData[idx].id)
+      topElement.scrollIntoView({block: "center", behavior: "smooth"})
       // API request here
     },
     onSearch() {
@@ -202,6 +188,7 @@ export default {
           .product-title {
             display: flex;
             align-items: center;
+            padding-bottom: 1rem;
 
             h3 {
               padding-bottom: 0.2rem;

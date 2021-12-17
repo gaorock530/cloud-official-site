@@ -10,7 +10,7 @@
       <el-affix :offset="80" class="aside">
         <aside>
           <h1>相关新闻</h1>
-          <li :class="{active: item.id === cateActiveId}" v-for="item in tabData" :key="item.title" @click="onCateChange(item.id)">{{item.title}}</li>
+          <li :class="{active: cateActiveIdx === idx}" v-for="(item, idx) in tabData" :key="idx" @click="onCateChange(idx)">{{item.title}}</li>
         </aside>
       </el-affix>
       <main>
@@ -31,22 +31,22 @@
             </el-col>
           </el-row>
         </div>
-        <h1>新闻动态</h1>
+        <h1>{{tabData[cateActiveIdx].title}}</h1>
         <ul>
-          <li v-for="item in tableData" :key="item.l">
+          <li v-for="item in displayList" :key="item.l">
             <div class="left">
               <div class="day">{{item.d}}</div>
               <div class="divide">/</div>
               <div class="monthyear"><span>{{item.m}}</span><span>{{item.y}}</span></div>
             </div>
             <div class="right">
-              <h3>{{item.t}}</h3>
+              <h3 class="news-header">{{item.t}}</h3>
               <p>{{item.l}}</p>
               <router-link to="/">查看详情</router-link>
             </div>
           </li>
         </ul>
-        <el-pagination background layout="total,prev, pager, next" :total="100"></el-pagination>
+        <el-pagination background :current-page="page.current" :page-size="page.perPage" layout="total,prev, pager, next" @current-change="onPageChange" :total="newsData.length"></el-pagination>
       </main>
     </section>
   </Main>
@@ -55,11 +55,18 @@
 <script>
 import Main from '@/components/Main.vue'
 import { ArrowRight } from '@element-plus/icons-vue'
+import { News } from '@/data/data.js'
+
 export default {
   components: { Main, ArrowRight },
   data() {
     return {
-      cateActiveId: 1,
+      newsData: News.slice(0, 20),
+      cateActiveIdx: 0,
+      page: {
+        perPage: 5,
+        current: 1,
+      },
       tabData: [
         {id: 1, title: '新闻动态'},
         {id: 2, title: '媒体动态' },
@@ -76,15 +83,27 @@ export default {
         { d: '22', m: '11月', y: '2021', t: '把握形势 突出重点 开创支付清算事业新局面', l: '018年人民银行清算中心工作会议3月1日至2日在广州召开。会议以党的十九大精神为指导，深入贯彻落实全国金融工作会议、人民 银行工作会议和全国支付结算工作会议精神' }
       ],
       lastSecData: [
-        { img: 'assets/news/pic1.png', t: 'IDC金融云市场报告发布 央行云 增速80%超行业平均水平', p: '2019-08-13 13:08:00' },
-        { img: 'assets/news/pic2.png', t: 'IDC金融云市场报告发布 央行云 增速80%超行业平均水平', p: '2019-08-13 13:08:00' }
+        { img: 'assets/news/pic1.png', t: '中共中央政治局召开会议 决定召开十九届六中全会 习近平主持会议', p: '2021-09-1 9:01:00' },
+        { img: 'assets/news/pic2.png', t: '胸怀千秋伟业 恰是百年风华——成方金信组织收看庆祝中国共产党成立100周年大会', p: '2021-07-01 08:08:00' }
       ]
     }
   },
   methods: {
-    onCateChange(id) {
-      this.cateActiveId = id
+    onCateChange(idx) {
+      this.cateActiveIdx = idx
       // API request here
+      const { perPage } = this.page
+      this.newsData = News.slice(idx*perPage, idx*perPage + 20)
+      this.page.current = 1
+    },
+    onPageChange(page) {
+      this.page.current = page
+    }
+  },
+  computed: {
+    displayList() {
+      const { perPage, current } = this.page
+      return this.newsData.slice(perPage*(current-1), perPage*(current-1) + perPage)
     }
   }
 }
@@ -182,6 +201,7 @@ h1 {
             h2 {
               font-size: 1.8rem;
               font-weight: normal;
+              color: #333;
             }
             p {
               color: #aaa;
@@ -245,6 +265,9 @@ h1 {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   background: rgba(20, 149, 146, 0.05);
+}
+::v-deep .el-pagination.is-background .el-pager li:hover {
+  color: var(--primary-color);
 }
 .el-pagination {
   margin-top: 20px;

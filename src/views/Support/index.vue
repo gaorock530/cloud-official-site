@@ -13,26 +13,26 @@
       <el-affix :offset="80" class="aside">
         <aside>
           <h1>产品文档</h1>
-          <li :class="{active: item.id === cateActiveId}" v-for="item in asideList" :key="item.t" @click="onCateActiveChange(item.id)">{{item.t}}</li>
+          <li :class="{active: idx === cateActiveId}" v-for="(cate, idx) in productsData" :key="idx" @click="onCateActiveChange(idx)">{{cate.cate}}</li>
         </aside>
       </el-affix>
       <div class="content">
         <ul class="card-title">
-          <li v-for="(title, idx) in asideList" :key="title">
+          <li v-for="(cate, idx) in productsData" :key="idx" :id="cate.id">
             <div class="title">
-              <img :src="title.img" :alt="title.t">
-              <h1>{{title.t}}</h1>
+              <img :src="cate.svg" :alt="cate.cate">
+              <h1>{{cate.cate}}</h1>
             </div>
             <ul class="card-section">
               <el-row :gutter="20">
-                <el-col :xs="24" :sm="12" :md="6" v-for="(item, i) in lastSecData[idx]" :key="i">
-                  <li>
-                    <div class="product-title">
-                      <h3>{{item.t}}</h3>
-                      <div class="tag" v-if="item.tag">{{item.tag}}</div>
-                    </div>
-                    <p>{{item.p}}</p>
-                  </li>
+                <el-col :xs="24" :sm="12" :md="6" v-for="(item, i) in cate.sub" :key="i">
+                  <router-link :to="`/docs${cate.to}${item.to}`">
+                    <li>
+                      <div class="product-title">
+                        <h3>{{item.name}} {{item.ab?`(${item.ab})`:null}}</h3>
+                      </div>
+                    </li>
+                  </router-link>
                 </el-col>
               </el-row>
             </ul>
@@ -46,63 +46,27 @@
 <script>
 import Main from "@/components/Main.vue";
 import { Search } from '@element-plus/icons-vue'
+import productsData from '@/data/products.js'
 
 export default {
   components: { Main, Search },
   data() {
     return {
+      productsData: productsData,
       searchText: '',
-      cateActiveId: 1,
-      asideList: [
-        { id: 1, t: "计算", img: 'assets/support/logo5.png' },
-        { id: 2, t: "网络", img: 'assets/support/logo2.png' },
-        { id: 3, t: "存储", img: 'assets/support/logo3.png' },
-        { id: 4, t: "数据库", img: 'assets/support/logo4.png' },
-        { id: 5, t: "互联网中间件", img: 'assets/support/logo5.png' },
-      ],
-      lastSecData: [
-        [
-          { t: "云服务（CVM）"  },
-          { t: "裸金属（TKE)"},
-          { t: "弹性伸缩(AS)"},
-          { t: "容器服务(BMS)" },
-        ],
-        [
-          { t: "专线接入（DC）"  },
-          { t: "负载均衡（CLB)"},
-          { t: "私有网络(VPC)"},
-        ],
-        [
-          { t: "云硬盘（CBS）"  },
-          { t: "对象存储（CSP)"},
-          { t: "文件存储(CFS)"},
-        ],
-        [
-          { t: "分布式数据库（TDSQL）"  },
-          { t: "弹性缓存数据库（Redis)"},
-          { t: "分布式文件存储（MongoDB）"},
-        ],
-        [
-          { t: "消息队列（CKafka）"  },
-          { t: "API网关（APIGW)"},
-          { t: "微服务框架（TSF)"},
-          { t: "分布式事务（DTF)"},
-        ]
-      ],
+      cateActiveId: 0,
     };
   },
   methods: {
-    onCateActiveChange(id) {
-      this.cateActiveId = id
+    onCateActiveChange(idx) {
+      this.cateActiveId = idx
+      const topElement = document.getElementById(productsData[idx].id)
+      topElement.scrollIntoView({block: "center", behavior: "smooth"})
       // API request here
     },
     onSearch() {
       if (!this.searchText) return
-
-      console.log(this.searchText)
       // search API request here
-
-
     }
   }
 };
@@ -241,6 +205,11 @@ export default {
           padding: 2rem;
           box-shadow: 0 0 10px rgba(#000, 0.1);
           cursor: pointer;
+
+          &:hover {
+            color: var(--primary-color);
+          }
+
           .product-title {
             display: flex;
             align-items: center;

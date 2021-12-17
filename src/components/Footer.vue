@@ -5,7 +5,7 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6" v-for="item in upperData" :key="item.t">
             <div class="item">
-              <router-link to="/supportdetail" class="card">
+              <router-link to="/" class="card">
                 <img :src="item.icon" />
                 <h3>{{item.t}}</h3>
               </router-link>
@@ -53,10 +53,10 @@ export default {
   data() {
     return {
       upperData: [
-        {icon: 'assets/footer/zhuanjia.png', t: '专家服务', p: '技术专家为您打造全周期专业服务'},
-        {icon: 'assets/footer/phone.png', t: '联系我们', p: '欢迎致电 XXX-XXXXXX'},
-        {icon: 'assets/footer/doc.png', t: '文档教程', p: '提供全面的文档、新手教程'},
-        {icon: 'assets/footer/sugg.png', t: '建议反馈', p: '欢迎反馈您的建议'}
+        {icon: '/assets/footer/zhuanjia.png', t: '专家服务', p: '技术专家为您打造全周期专业服务'},
+        {icon: '/assets/footer/phone.png', t: '联系我们', p: '欢迎致电 XXX-XXXXXX'},
+        {icon: '/assets/footer/doc.png', t: '文档教程', p: '提供全面的文档、新手教程'},
+        {icon: '/assets/footer/sugg.png', t: '建议反馈', p: '欢迎反馈您的建议'}
       ]
     }
   }

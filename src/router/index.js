@@ -49,6 +49,11 @@ export default [
     // 登录页面
     path: '/login',
     component: () => import('@/views/Login/index.vue')
+  },
+  {
+    // 文档详情iframe
+    path: '/docs/:cate/:sub',
+    component: () => import('@/views/Documents/index.vue')
   }
 ]
 

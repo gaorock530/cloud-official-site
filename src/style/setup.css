@@ -27,6 +27,22 @@ li {
   position: relative;
   margin: 0 auto;
   width: 100%;
-  max-width: 1420px;
+  max-width: 1200px;
   padding: 0 1rem;
+}
+
+.no-footer {
+  overflow: hidden;
+}
+
+.news-header {
+  font-size: 1.4rem !important;
+  color: #333 !important;
+  font-weight: normal !important;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.news-header:hover {
+  text-decoration: underline;
 }

@@ -32,7 +32,7 @@
 
     <section class="sec-3">
       <div class="container">
-        <div class="row">
+        <div class="row" id="s1">
           <el-row :gutter="120">
             <el-col :sm="10" >
               <img class="first-child" src="/assets/solution/bg3/bg3-1.png" />
@@ -55,7 +55,7 @@
             </el-col>
           </el-row>
         </div>
-        <div class="row">
+        <div class="row" id="s2">
           <el-row :gutter="120">
             <el-col :sm="14">
               <div class="grid-content">
@@ -134,6 +134,8 @@ export default {
   methods: {
     onTabChange(id) {
       this.tabActiveId = id
+      const el = document.getElementById(`s${id}`)
+      el.scrollIntoView({block: "center", behavior: "smooth"})
       // API request here...
     }
   }

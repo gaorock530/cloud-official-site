@@ -10,19 +10,16 @@
       <div class="container">
         <h1>关于我们</h1>
         <el-row :gutter="57">
-          <el-col :xs="24" :sm="12" :md="10">
-            <div class="grid-content">
+          <el-col :md="24" :lg="10">
+            <div class="grid-content center">
               <img src="/assets/about/pg1.png"/>
             </div>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="14">
+          <el-col :md="24" :lg="14">
             <div class="grid-content">
               <p>央行云是为落实“三集中”要求由成方金信承建，面向人民银行及直属企事业单位推出的采用自助服务模式、提供基础资源、平台能力、软件应用等服务的云计算服务平台。</p>
               <p>央行云目前包括北京稻香湖、德胜及上海张江三个数据中心，具有同城双活、异地灾备的两地三中心架构，未来将逐步扩建并纳管各单位现有基础资源形成多地多中心格局，为分布式架构应用转型提供支持。</p>
               <p>央行云采用了从基础服务器到云平台的全栈国产化架构，并实现了一云多芯，通过服务器虚拟化、存储虚拟化、网络安全能力自动化、资源动态调度等技术，既能提供基于国产芯片服务器的计算、存储、网络、安全、数据库、中间件等服务，也支持输出基于通用X86服务器的各类服务，用户根据其应用的需要可以按需使用。</p>
-              <!-- <p>
-                清算总中心负责建设、运行、维护、管理的支付清算系统包括:大额实时支付系统（HVPS）、小额批量支付系统（BEPS）、网上支付跨行清算系统（IBPS）、境内外币支付系统（CFXPS），是我国重要的金融基础设施，是国家和社会资金流动的大动脉。清算总中心在中国人民银行党委的正确领导下，以习近平新时代中国特色社会主义思想为指导，认真学习贯彻党的十九大精神，牢固树立“四个意识”,坚定“四个自信”，坚持创新、协调、绿色、开放、共享的发展理念和“为社会主义市场经济服务”的宗旨，不忘初心牢记使命，始终把“建立和完善统一、高效、安全的支付清算系统”，打造和谐支付，构建和谐金融服务环境作为矢志不渝的努力方向，扎实推进中央银行支付清算系统建设，努力提高支付清算服务水平。2013年10月8日正式上线运行的第二代支付系统，在继承了第一代各业务系统功能的同时，引入了先进的支付清算管理理念和技术标准，支持商业银行一点接入支付系统，并实现“一点清算”。第二代支付系统将具有更加广阔的发展前景。
-              </p> -->
             </div>
           </el-col>
         </el-row>
@@ -57,18 +54,18 @@
       <h1>官方公告</h1>
       <div class="container">
         <ul>
-          <li v-for="item in tableData" :key="item.l">
+          <li v-for="item in displayList" :key="item.l">
             <div class="left">
               <div class="day">{{item.d}}</div>
               <div class="divide">/</div>
               <div class="monthyear"><span>{{item.m}}</span><span>{{item.y}}</span></div>
             </div>
             <div class="right">
-              <p>{{item.l}}</p>
+              <p class="news-header">{{item.t}}</p>
             </div>
           </li>
         </ul>
-        <el-pagination background layout="total,prev, pager, next" :total="100"></el-pagination>
+        <el-pagination background :current-page="page.current" :page-size="page.perPage" layout="total,prev, pager, next" @current-change="onPageChange" :total="noticeList.length"></el-pagination>
       </div>
     </section>
   </Main>
@@ -77,11 +74,17 @@
 <script>
 import Main from "@/components/Main.vue";
 import { ArrowRight } from "@element-plus/icons-vue";
+import { Notice } from '@/data/data.js'
 
 export default {
   components: { Main, ArrowRight },
   data() {
     return {
+      page: {
+        perPage: 6,
+        current: 1,
+      },
+      noticeList: Notice,
         tableData: [
         { d: '30', m: '11月', y: '2021', l: '【产品升级】央行云数据库代理服务于2021年12月4日 02:00-06:00（北京时间）版本升级通知', active: true },
         { d: '28', m: '11月', y: '2021', l: '首届金融科技锦绣论坛在京举办，央行加快推动产业数字化转型' },
@@ -91,8 +94,8 @@ export default {
         { d: '22', m: '11月', y: '2021', l: '落实普惠金融服务，打造支付为民平台——全国综合业务服务平台投产上线' },
       ],
       list:[
-         {t:'安全可信', active:true},
-         {t:'专享定制'},
+         {t:'安全可信'},
+         {t:'专享定制', active:true},
          {t:'最佳时间'}
       ]
     };
@@ -103,9 +106,19 @@ export default {
         l.active = index === idx
         return l
       })
+    },
+    onPageChange(page) {
+      this.page.current = page
+    }
+  },
+  computed: {
+    displayList() {
+      const { perPage, current } = this.page
+      return this.noticeList.slice(perPage*(current-1), perPage*(current-1) + perPage)
     }
   }
-};
+}
+
 </script>
 
 <style  lang="scss" scoped>
@@ -144,13 +157,21 @@ h1 {
   background-repeat: no-repeat;
   background-size: cover;
 
+  .center{
+    text-align: center;
+  }
+
   img {
     width: 100%;
+    max-width: 600px;
     object-fit: contain;
+    text-align: center;
   }
   p {
-    font-size: 16px;
-    line-height: 2.5rem;
+    font-size: 1.4rem;
+    line-height: 2.8rem;
+    text-indent: 2em;
+    color: rgba(#000, 0.65);
   }
 }
 
@@ -170,6 +191,7 @@ h1 {
 
       h2 {
         padding: 1rem 0;
+        font-size: 1.6rem;
       }
 
     }
@@ -189,7 +211,7 @@ h1 {
 
       h3 {
         padding: 1rem 0;
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         position: relative;
         &::before {
           content: '';
@@ -203,7 +225,7 @@ h1 {
       }
       p {
         padding-top: 1rem;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         line-height: 2rem;
       }
     }
@@ -251,7 +273,8 @@ h1 {
         flex: 8;
         p {
           line-height: 2rem;
-          font-size: 1.2rem;
+          font-size: 1.6rem;
+          font-weight: bold;
         }
       }
     }
@@ -264,6 +287,9 @@ h1 {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   background: rgba(20, 149, 146, 0.05);
+}
+::v-deep .el-pagination.is-background .el-pager li:hover {
+  color: var(--primary-color);
 }
 .el-pagination {
   margin-top: 20px;

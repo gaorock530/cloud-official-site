@@ -5,51 +5,17 @@
         <aside>
           <div class="top">
             <p>全部文档</p>
-            <el-icon :size="20"><expand /></el-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="20" viewBox="0 0 24 24" fill="#666"><path d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z" /></svg>
           </div>
           <h1>云服务器 （CVM）</h1>
-          <el-collapse accordion>
-            <el-collapse-item title="产品简介" name="1">
-                <ul>
-                <router-link to="/"><li>云服务器概述</li></router-link>
-                <router-link to="/"><li>地域和可用区</li></router-link>
-                <router-link to="/"><li>功能与优势</li></router-link>
-                <router-link to="/"><li>应用场景</li></router-link>
+          <el-collapse accordion :model-value="activeMenu[0]">
+            <el-collapse-item :title="m.t" :name="mI" v-for="(m, mI) in menu" :key="mI">
+              <ul>
+                <router-link :to="s.to" v-for="(s, sI) in m.sub" :key="sI">
+                  <li :class="{active: (mI === activeMenu[0] && sI === activeMenu[1])}" @click.stop.capture="onMenuActiveChange([mI, sI])">{{s.t}}</li>
+                </router-link>
               </ul>
             </el-collapse-item>
-            <el-collapse-item title="快速入门" name="2">
-                <ul>
-                <router-link to="/"><li>云服务器概述</li></router-link>
-                <router-link to="/"><li>地域和可用区</li></router-link>
-                <router-link to="/"><li>功能与优势</li></router-link>
-                <router-link to="/"><li>应用场景</li></router-link>
-              </ul>
-            </el-collapse-item>
-            <el-collapse-item title="最佳实践" name="3">
-                <ul>
-                <router-link to="/"><li>云服务器概述</li></router-link>
-                <router-link to="/"><li>地域和可用区</li></router-link>
-                <router-link to="/"><li>功能与优势</li></router-link>
-                <router-link to="/"><li>应用场景</li></router-link>
-              </ul>
-            </el-collapse-item>
-            <el-collapse-item title="运维指南" name="4">
-                <ul>
-                <router-link to="/"><li>云服务器概述</li></router-link>
-                <router-link to="/"><li>地域和可用区</li></router-link>
-                <router-link to="/"><li>功能与优势</li></router-link>
-                <router-link to="/"><li>应用场景</li></router-link>
-              </ul>
-            </el-collapse-item>
-            <el-collapse-item title="常见问题" name="5">
-                <ul>
-                <router-link to="/"><li>云服务器概述</li></router-link>
-                <router-link to="/"><li>地域和可用区</li></router-link>
-                <router-link to="/"><li>功能与优势</li></router-link>
-                <router-link to="/"><li>应用场景</li></router-link>
-              </ul>
-            </el-collapse-item>
-
           </el-collapse>
         </aside>
         <main>
@@ -105,7 +71,64 @@
 import Main from '@/components/Main.vue'
 import { Expand } from '@element-plus/icons-vue'
 export default {
-  components: { Main, Expand }
+  components: { Main, Expand },
+  data() {
+    return {
+      activeMenu: [0, 0],
+      menu: [
+        {
+          t: '产品简介',
+          sub: [
+            {t: '云服务器概述', to: '/'},
+            {t: '地域和可用区', to: '/'},
+            {t: '功能与优势', to: '/'},
+            {t: '应用场景', to: '/'},
+          ]
+        },
+        {
+          t: '快速入门',
+          sub: [
+            {t: '云服务器概述', to: '/'},
+            {t: '地域和可用区', to: '/'},
+            {t: '功能与优势', to: '/'},
+            {t: '应用场景', to: '/'},
+          ]
+        },
+        {
+          t: '最佳实践',
+          sub: [
+            {t: '云服务器概述', to: '/'},
+            {t: '地域和可用区', to: '/'},
+            {t: '功能与优势', to: '/'},
+            {t: '应用场景', to: '/'},
+          ]
+        },
+        {
+          t: '运维指南',
+          sub: [
+            {t: '云服务器概述', to: '/'},
+            {t: '地域和可用区', to: '/'},
+            {t: '功能与优势', to: '/'},
+            {t: '应用场景', to: '/'},
+          ]
+        },
+        {
+          t: '常见问题',
+          sub: [
+            {t: '云服务器概述', to: '/'},
+            {t: '地域和可用区', to: '/'},
+            {t: '功能与优势', to: '/'},
+            {t: '应用场景', to: '/'},
+          ]
+        }
+      ]
+    }
+  },
+  methods: {
+    onMenuActiveChange(menuArr) {
+      this.activeMenu = menuArr
+    }
+  }
 }
 
 </script>
@@ -117,7 +140,8 @@ export default {
 
   .top {
     display: flex;
-    color: #999;
+    align-items: center;
+    color: #666;
     p {
       flex: 1;
     }
@@ -138,6 +162,9 @@ export default {
       padding-left: 1rem;
       li {
         padding: 0.5rem 0;
+        &.active, &:hover {
+          color: var(--primary-color);
+        }
       }
     }
   }
@@ -166,18 +193,16 @@ export default {
   // }
 
 }
-</style>
-
-<style>
-.el-collapse .el-collapse-item__header{
+:v-deep .el-collapse .el-collapse-item__header{
   background-color: transparent !important;
 }
 
-.el-collapse .el-collapse-item__wrap {
+:v-deep .el-collapse .el-collapse-item__wrap {
   background-color: transparent !important;
 }
 
-.el-breadcrumb .el-breadcrumb__item.active-color .el-breadcrumb__inner{
+:v-deep .el-breadcrumb .el-breadcrumb__item.active-color .el-breadcrumb__inner{
   color: var(--primary-color) !important;
 }
 </style>
+

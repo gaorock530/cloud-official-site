@@ -11,7 +11,7 @@
     </nav>
     <ul class="utils">
       <router-link to="/notice"><li>公告</li></router-link>
-      <router-link to="/login"><li>登陆</li></router-link>
+      <a href="https://11.141.41.129:60008/" target="_self"><li>登陆</li></a>
     </ul>
     <div class="mininav">
       <div class="mini-header"><img :src="miniOpen?miniCloseUrl:miniOpenUrl" @click="miniOpen = !miniOpen" /></div>
@@ -23,7 +23,7 @@
         <router-link to="/support"><li>文档中心</li></router-link>
         <router-link to="/about"><li>关于我们</li></router-link>
         <router-link to="/notice"><li>公告</li></router-link>
-        <router-link to="/login"><li>登陆</li></router-link>
+        <a href="https://11.141.41.129:60008/" target="_self"><li>登陆</li></a>
       </ul>
     </div>
   </header>
