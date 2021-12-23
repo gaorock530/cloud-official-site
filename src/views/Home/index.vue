@@ -61,11 +61,26 @@
           <el-icon><arrow-right /></el-icon>
         </router-link>
         <div class="wrapper">
-          <el-row :gutter="0">
-            <!-- :xs="8" :sm="6" :md="4" :lg="3" :xl="1" -->
-            <el-col :class="{active: featureActiveId === idx}" :md="featureActiveId === idx?9:5" :sm="12" :xs="24"
+          <ul>
+            <li v-for="(item) in featureData" :key="item.t">
+              <div class="block" :style="{backgroundImage: `url(${item.bg})`}">
+                <div className="cover-layer"></div>
+                <div className="content" :style="{width: `${width}px`}">
+                  <img :src="item.icon" />
+                  <h2>{{item.t}}</h2>
+                  <div class="more">
+                    <p>{{item.l}}</p>
+                    <li v-for="tag in item.p" :key="tag">√ {{tag}}</li>
+                    <router-link to="/">查看详情</router-link>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <!-- <el-row :gutter="0">
+            <el-col :class="{active: featureActiveId === idx}" :md="featureActiveId === null?6:(featureActiveId === idx?9:5)" :sm="12" :xs="24"
             v-for="(item, idx) in featureData" :key="item.t">
-              <div class="grid-content" :style="{ backgroundImage: `url(${item.bg})`}" @mouseenter="handleMouseEnter(idx)">
+              <div class="grid-content" :style="{ backgroundImage: `url(${item.bg})`}" @mouseenter="handleMouseEnter(idx)" @mouseleave="handleMouseLeave">
                 <div class="icon">
                   <img :src="item.icon" />
                   <h2>{{item.t}}</h2>
@@ -77,7 +92,7 @@
                 </div>
               </div>
             </el-col>
-          </el-row>
+          </el-row> -->
         </div>
 
       </div>
@@ -134,23 +149,38 @@ export default {
         { bg: 'assets/home/bg3/bg3-3.png', icon: 'assets/home/bg3/logo3.png', t: '容器',l:'提供高性能可伸缩的容器应用管理能力，支持企业级容器化应用的全生命周期管理',p:['集群管理,灵活的地域和网络环境选择','多种服务器托管方式','一站式容器生命周期管理','灵活扩展调度策略']},
         { bg: 'assets/home/bg3/bg3-4.png', icon: 'assets/home/bg3/logo4.png', t: '数据库',l:'按照数据结构来组织、存储和管理数据的仓库',p:['访问控制','安全防护','数据加密','操作审计']},
       ],
-      featureActiveId: 0,
+      featureActiveId: null,
       lastSecData: [
         {img: 'assets/home/bg5/logo1.png', t: '多中心金融合规专区', p: '"两地六中心"合规机房，通过等保四级，可信云认证，助力企业顺利通过合规验收，数据异地自动同步，业务无忧。'},
         {img: 'assets/home/bg5/logo2.png', t: '30+安全机制立体防护', p: '多重防护保障数据安全，秒级抵御网络攻击，P级黑产数据，90%恶意用户识别率，降低金融欺诈风险'},
         {img: 'assets/home/bg5/logo3.png', t: '兼容传统金融业务架构', p: '支持Oracle、金融防火架构，混合云部署，按需交付，轻松扩展业务，数十款金融软件已上云，成功经验即刻复制。'},
         {img: 'assets/home/bg5/logo4.png', t: '大数据', p: '丰富的云端大数据产品和服务，助力客户快速获取数据洞察力。'}
-      ]
+      ],
+      width: 0
     }
   },
   methods: {
     handleMouseEnter(idx) {
       this.featureActiveId = idx
     },
+    handleMouseLeave() {
+      this.featureActiveId = null
+    },
     onTabChange(id) {
       this.tabActiveId = id
       // API request here...
+    },
+    calcWidth() {
+      const wi = window.innerWidth / 4;
+      this.width = wi*1.55
     }
+  },
+  created() {
+    this.calcWidth()
+    window.addEventListener('resize', this.calcWidth)
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.calcWidth)
   }
 }
 </script>
@@ -350,96 +380,201 @@ export default {
     }
 
     .wrapper {
-      .grid-content {
+
+      // cards
+      ul {
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        background-color: #333;
-        min-height: 595px;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        position: relative;
+        align-items: center;
+        // margin: 10vmin;
+        width: 100%;
+        // overflow: hidden;
 
-        &::before {
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(#000, 0.3);
-          left: 0;
-          top: 0;
-          z-index: 0;
-        }
-
-        .icon {
+        &>li {
+          flex: 1;
+          transition: all .65s ease-in-out;
+          height: 595px;
+          padding: 0 5px;
           position: relative;
-          z-index: 99;
-          h2 {
-            font-size: 1.8rem;
-            font-weight: normal;
-            padding: 1rem 0;
+          background-color: #eee;
+
+          &:hover {
+            flex-grow: 2;
+
+            .block .cover-layer {
+              opacity: 1;
+            }
+
+            .block .content {
+              transform: translateY(0);
+
+              .more {
+                opacity: 1;
+              }
+            }
+          }
+
+
+          .block {
+            position: relative;
+            display: block;
+            height: 100%;
+            background-size: cover;
+            background-position: left;
+            background-repeat: no-repeat;
             color: #fff;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-drag: none;
+            text-align: left;
+
+
+            .cover-layer {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              top: 0;
+              left: 0;
+              background-color: rgba(#000, 0.5);
+              opacity: 0.6;
+            }
+            .content {
+              position: absolute;
+              z-index: 10;
+              top: 0;
+              left: 0;
+              transform: translateY(380px);
+              overflow: hidden;
+              transition: transform .65s ease-in-out;
+              padding: 3rem;
+
+              h2 {
+                padding: 20px 0;
+              }
+
+              img {
+                object-fit: contain;
+                height: 50px;
+              }
+
+              .more {
+                position: relative;
+                z-index: 99;
+                color: #fff;
+                text-align: left;
+                font-size: 1.2rem;
+                opacity: 0;
+                transition: opacity .65s ease-in-out;
+
+                a {
+                  display: inline-block;
+                  margin-top: 3rem;
+                  border: 1px solid #fff;
+                  padding: 0.3rem 1rem;
+                }
+
+                p {
+                  padding: 1rem 0 3rem 0;
+                }
+                li {
+                  padding: 0.3rem 0;
+                }
+              }
+            }
           }
         }
-
-
-        .more {
-          position: relative;
-          z-index: 99;
-          display: none;
-          color: #fff;
-          text-align: left;
-          font-size: 1.2rem;
-
-          a {
-            display: inline-block;
-            margin-top: 3rem;
-            border: 1px solid #fff;
-            padding: 0.3rem 1rem;
-          }
-          p {
-            padding: 1rem 0 3rem 0;
-          }
-          li {
-            padding: 0.3rem 0;
-
-          }
-        }
-
       }
 
-      .active .grid-content {
-        align-items: flex-start;
-        padding: 0 8rem;
-        .more {
-          display: initial;
 
-        }
-        .icon {
-          text-align: left;
-        }
-      }
+      // .grid-content {
+      //   display: flex;
+      //   flex-direction: column;
+      //   align-items: center;
+      //   justify-content: center;
+      //   background-color: #333;
+      //   min-height: 595px;
+      //   background-position: center;
+      //   background-size: cover;
+      //   background-repeat: no-repeat;
+      //   position: relative;
+
+      //   &::before {
+      //     content: '';
+      //     position: absolute;
+      //     width: 100%;
+      //     height: 100%;
+      //     background-color: rgba(#000, 0.3);
+      //     left: 0;
+      //     top: 0;
+      //     z-index: 0;
+      //   }
+
+      //   .icon {
+      //     position: relative;
+      //     z-index: 99;
+      //     h2 {
+      //       font-size: 1.8rem;
+      //       font-weight: normal;
+      //       padding: 1rem 0;
+      //       color: #fff;
+      //     }
+      //   }
+
+
+      //   .more {
+      //     position: relative;
+      //     z-index: 99;
+      //     display: none;
+      //     color: #fff;
+      //     text-align: left;
+      //     font-size: 1.2rem;
+
+      //     a {
+      //       display: inline-block;
+      //       margin-top: 3rem;
+      //       border: 1px solid #fff;
+      //       padding: 0.3rem 1rem;
+      //     }
+      //     p {
+      //       padding: 1rem 0 3rem 0;
+      //     }
+      //     li {
+      //       padding: 0.3rem 0;
+      //     }
+      //   }
+
+      // }
+
+      // .active .grid-content {
+      //   align-items: flex-start;
+      //   padding: 0 8rem;
+      //   .more {
+      //     display: initial;
+
+      //   }
+      //   .icon {
+      //     text-align: left;
+      //   }
+      // }
 
     }
 
   }
 }
 
-@media screen and (max-width: 991px) {
-  .sec-3 .sec-3-wrapper .wrapper .grid-content {
-    align-items: flex-start;
-    padding: 0 8rem;
+// @media screen and (max-width: 991px) {
+//   .sec-3 .sec-3-wrapper .wrapper .grid-content {
+//     align-items: flex-start;
+//     padding: 0 8rem;
 
-    .more {
-      display: initial
-    }
-    .icon {
-      text-align: left;
-    }
-  }
-}
+//     .more {
+//       display: initial
+//     }
+//     .icon {
+//       text-align: left;
+//     }
+//   }
+// }
 
 .sec-4 {
   position: relative;
@@ -469,7 +604,7 @@ export default {
       top: 60px;
       width: 120px;
       height: 120px;
-      object-fit: contain;
+      object-fit: cover;
     }
   }
 
@@ -506,6 +641,10 @@ export default {
 }
 ::v-deep .el-carousel__indicator.el-carousel__indicator--horizontal .el-carousel__button {
   background-color: var(--primary-color) !important;
+}
+
+::v-deep .el-col {
+  transition: all 0.65s ease-in-out;
 }
 
 
